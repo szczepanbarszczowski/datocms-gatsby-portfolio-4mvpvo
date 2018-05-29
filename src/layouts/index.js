@@ -5,12 +5,27 @@ import { HelmetDatoCms } from 'gatsby-source-datocms'
 
 import '../styles/index.sass'
 
+const openNav = () => {
+  document.getElementById("myNav").style.width = "100%";
+}
+
+const closeNav = () => {
+  document.getElementById("myNav").style.width = "0%";
+}
+
 const TemplateWrapper = ({ children, data }) => (
   <div className="container">
     <HelmetDatoCms
       favicon={data.datoCmsSite.faviconMetaTags}
       seo={data.datoCmsHome.seoMetaTags}
     />
+    <div id="myNav" className="overlay">
+      <a className="closebtn" onClick={closeNav}>&times;</a>
+      <div className="overlay-content">
+        <Link to="/" onClick={closeNav}>Home</Link>
+        <Link to="/about" onClick={closeNav}>About</Link>
+      </div>
+    </div>
     <div className="container__sidebar">
       <div className="sidebar">
         <h6 className="sidebar__title">
@@ -30,24 +45,26 @@ const TemplateWrapper = ({ children, data }) => (
             <Link to="/about">About</Link>
           </li>
         </ul>
-        <p className="sidebar__social">
-          {data.allDatoCmsSocialProfile.edges.map(({ node: profile }) => (
-            <a
-              key={profile.profileType}
-              href={profile.url}
-              target="blank"
-              className={`social social--${profile.profileType.toLowerCase()}`}
-            />
-          ))}
-        </p>
-        <div className="sidebar__copyright">{data.datoCmsHome.copyright}</div>
+        <div className="sidebar__footer">
+          <p className="sidebar__social">
+            {data.allDatoCmsSocialProfile.edges.map(({ node: profile }) => (
+              <a
+                key={profile.profileType}
+                href={profile.url}
+                target="blank"
+                className={`social social--${profile.profileType.toLowerCase()}`}
+              />
+            ))}
+          </p>
+          <div className="sidebar__copyright">{data.datoCmsHome.copyright}</div>
+        </div>
       </div>
     </div>
     <div className="container__body">
       <div className="container__mobile-header">
         <div className="mobile-header">
           <div className="mobile-header__menu">
-            <Link to="#" data-js="toggleSidebar" />
+            <a onClick={openNav} />
           </div>
           <div className="mobile-header__logo">
             <Link to="/">{data.datoCmsSite.globalSeo.siteName}</Link>
